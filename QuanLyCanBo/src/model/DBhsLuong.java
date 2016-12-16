@@ -19,8 +19,35 @@ import java.util.logging.Logger;
  * @author Windows 10
  */
 public class DBhsLuong {
+        //Lấy tất cả chức danh của cán bộ khi đã có MaCB
+    public ArrayList<HeSoLuong> getAllCanBo(){
+        Connection connection = MyConnection.open();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<HeSoLuong> arrayList = null;
+        try {
+
+            String sql = " SELECT * FROM `hsLuong`";
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            arrayList = new ArrayList<>();
+            while (resultSet.next()) {
+                int idhsLuong = resultSet.getInt(1);
+                String maCB = resultSet.getString(2);
+                double hsLuong = resultSet.getDouble(3);
+                Date thoiGianBD = resultSet.getDate(4);
+                HeSoLuong hsluong = new HeSoLuong(idhsLuong, maCB, hsLuong, thoiGianBD);
+                arrayList.add(hsluong);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBhsLuong.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            MyConnection.closeConnection(resultSet, preparedStatement, connection);
+        }
+        return arrayList;
+    }
     //Lấy tất cả chức danh của cán bộ khi đã có MaCB
-    public ArrayList<HeSoLuong> getAll(CanBo canBo){
+    public ArrayList<HeSoLuong> getAll(String macb){
         Connection connection = MyConnection.open();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -29,7 +56,7 @@ public class DBhsLuong {
 
             String sql = " SELECT * FROM `hsLuong` WHERE MaCB=?";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,canBo.getMaCB());
+            preparedStatement.setString(1,macb);
             resultSet = preparedStatement.executeQuery();
             arrayList = new ArrayList<>();
             while (resultSet.next()) {
@@ -48,7 +75,7 @@ public class DBhsLuong {
         return arrayList;
     }
     //Chèn thêm chức danh cho 1 cán bộ cụ thể
-    public HeSoLuong addNew(CanBo canBo,HeSoLuong hsLuong){
+    public HeSoLuong addNew(String macb,HeSoLuong hsLuong){
         Connection connection = MyConnection.open();
         PreparedStatement preparedStatement = null;
         int update = 0;
@@ -57,7 +84,7 @@ public class DBhsLuong {
             String sql = "INSERT INTO `hsLuong` VALUES (?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, hsLuong.getIdhesoluong());
-            preparedStatement.setString(2, canBo.getMaCB());
+            preparedStatement.setString(2, macb);
             preparedStatement.setDouble(3, hsLuong.getHsluong());
             Date thoiGianBD = hsLuong.getThoiGianBD();
             java.sql.Date dateSql = new java.sql.Date(thoiGianBD.getTime());
@@ -75,15 +102,15 @@ public class DBhsLuong {
         }
     }
     //Xóa chức danh của 1 cán bộ cụ thể
-        public HeSoLuong deletehsLuong(CanBo canBo,HeSoLuong hsLuong) {
+        public HeSoLuong deletehsLuong(HeSoLuong hsLuong) {
         Connection connection = MyConnection.open();
         PreparedStatement preparedStatement = null;
         int delete = 0;
         try {
 
-            String sql = "DELETE FROM `hsLuong` WHERE MaCB = ?";
+            String sql = "DELETE FROM `hsLuong` WHERE `idhsluong` = ?";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,canBo.getMaCB());
+            preparedStatement.setInt(1,hsLuong.getIdhesoluong());
             delete = preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DBChamThi.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,20 +122,19 @@ public class DBhsLuong {
         }
     }
     //Cập nhât chức danh của 1 cán bộ
-    public HeSoLuong updatehsLuong(CanBo canBo,HeSoLuong hsLuong){
+    public HeSoLuong updatehsLuong(HeSoLuong hsLuong){
         Connection connection = MyConnection.open();
         PreparedStatement preparedStatement = null;
         int update = 0;
         try {
 
-            String sql = "UPDATE `hsLuong` SET `idhsLuong`=?,`hsLuong`=?,`ThoiGianBD`=? WHERE MaCB=?";
+            String sql = "UPDATE `hsLuong` SET `hsLuong`=?,`ThoiGianBD`=? WHERE `idhsluong`=?";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, hsLuong.getIdhesoluong());
-            preparedStatement.setDouble(2, hsLuong.getHsluong());
+            preparedStatement.setDouble(1, hsLuong.getHsluong());
             Date thoiGianBD = hsLuong.getThoiGianBD();
             java.sql.Date dateSql = new java.sql.Date(thoiGianBD.getTime());
-            preparedStatement.setDate(3, dateSql);
-            preparedStatement.setString(4, canBo.getMaCB());
+            preparedStatement.setDate(2, dateSql);
+            preparedStatement.setInt(3, hsLuong.getIdhesoluong());
             update = preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DBhsLuong.class.getName()).log(Level.SEVERE, null, ex);

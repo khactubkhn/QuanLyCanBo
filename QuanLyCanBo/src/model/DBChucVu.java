@@ -88,7 +88,7 @@ public class DBChucVu {
             preparedStatement.setInt(1, ChucVu.getIdchucvu());
             preparedStatement.setString(2, macb);
             preparedStatement.setString(3, ChucVu.getChucVu());
-            preparedStatement.setDouble(3, ChucVu.getPCChucVu());
+            preparedStatement.setDouble(4, ChucVu.getPCChucVu());
             Date thoiGianBD = ChucVu.getThoiGianBD();
             java.sql.Date dateSql = new java.sql.Date(thoiGianBD.getTime());
             preparedStatement.setDate(5, dateSql);
@@ -125,21 +125,20 @@ public class DBChucVu {
         }
     }
     //Cập nhât chức danh của 1 cán bộ
-    public ChucVu updateChucVu(CanBo canBo,ChucVu ChucVu){
+    public ChucVu updateChucVu(ChucVu ChucVu){
         Connection connection = MyConnection.open();
         PreparedStatement preparedStatement = null;
         int update = 0;
         try {
 
-            String sql = "UPDATE `chuc_vu` SET `idChucVu`=?,`ChucVu`=?,`PCChucVu`=?,`ThoiGianBD`=? WHERE MaCB=?";
+            String sql = "UPDATE `chuc_vu` SET `ChucVu`=?,`PCChucVu`=?,`ThoiGianBD`=? WHERE `idchucvu`=?";
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, ChucVu.getIdchucvu());
-            preparedStatement.setString(2, ChucVu.getChucVu());
-            preparedStatement.setDouble(3, ChucVu.getPCChucVu());
+            preparedStatement.setString(1, ChucVu.getChucVu());
+            preparedStatement.setDouble(2, ChucVu.getPCChucVu());
             Date thoiGianBD = ChucVu.getThoiGianBD();
             java.sql.Date dateSql = new java.sql.Date(thoiGianBD.getTime());
-            preparedStatement.setDate(4, dateSql);
-            preparedStatement.setString(5, canBo.getMaCB());
+            preparedStatement.setDate(3, dateSql);
+            preparedStatement.setInt(4,ChucVu.getIdchucvu());
             update = preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DBChucVu.class.getName()).log(Level.SEVERE, null, ex);
