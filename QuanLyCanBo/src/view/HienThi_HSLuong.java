@@ -6,64 +6,59 @@
 package view;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import model.DBhsLuong;
+import model.HeSoLuong;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import model.CanBo;
-import model.ChucDanh;
-import model.DBChucDanh;
-
 /**
  *
  * @author Windows 10
  */
-public class HienThi_ChucDanh extends javax.swing.JFrame {
-
+public class HienThi_HSLuong extends javax.swing.JFrame {
     //Khởi tạo dữ liệu
-    ArrayList<ChucDanh> arrayList;
-    DBChucDanh dBChucDanh;
+    ArrayList<HeSoLuong> arrayList;
+    DBhsLuong dBhsLuong;
     DefaultTableModel defaultTableModel;
     SimpleDateFormat dateFormat;
-    int IdChucDanh;
+    int IdChucVu;
     int size;
-
     /**
-     * Creates new form ThemChucDanh
+     * Creates new form HienThi_HSLuong
      */
-    public HienThi_ChucDanh(CanBo canbo) {
+    public HienThi_HSLuong(CanBo canbo) {
         initComponents();
         String maCB = canbo.getMaCB();
         jLabel_MaCB.setText(maCB);
         defaultTableModel = new DefaultTableModel();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dBChucDanh = new DBChucDanh();
-        arrayList = dBChucDanh.getAll(maCB);
+        dBhsLuong = new DBhsLuong();
+        arrayList = dBhsLuong.getAll(maCB);
         size = arrayList.size();
-        ArrayList<ChucDanh> list = dBChucDanh.getAllCanBo();
+        ArrayList<HeSoLuong> list = dBhsLuong.getAllCanBo();
         //ID để tính cho vị trí tiếp theo chèn vào sẽ không bị trùng
-        IdChucDanh = list.get(list.size() - 1).getId() + 1;
+        IdChucVu = list.get(list.size() - 1).getIdhesoluong() + 1;
         loadNameColumn();
         loadDataTable(arrayList);
         this.setResizable(false);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-
     //Tên các cột trong bảng 
     private void loadNameColumn() {
         ArrayList<String> listColumnName = new ArrayList<>();
         listColumnName.add("STT");
-        listColumnName.add("Chức Danh");
+        listColumnName.add("Hệ Số Lương");
         listColumnName.add("Ngày bắt đầu");
         defaultTableModel.setColumnIdentifiers(listColumnName.toArray());
     }
-
-    //
-    private void loadDataTable(ArrayList<ChucDanh> al) {
-        IdChucDanh++;
+    //load data lên bảng
+    private void loadDataTable(ArrayList<HeSoLuong> al) {
+        IdChucVu++;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         //Làm mới bảng
         defaultTableModel.setRowCount(0);
@@ -72,17 +67,16 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
         if (al != null) {
             for (int i = 0; i < al.size(); i++) {
                 listRow.add(i + 1);
-                listRow.add(al.get(i).getChucDanh());
+                listRow.add(al.get(i).getHsluong());
                 Date date = al.get(i).getThoiGianBD();
                 String thoiGianBD = dateFormat.format(date);
                 listRow.add(thoiGianBD);
                 defaultTableModel.addRow(listRow.toArray());
                 listRow.clear();
             }
-            jTable_ChucDanh.setModel(defaultTableModel);
+            jTable_ChucVu.setModel(defaultTableModel);
         }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,8 +89,8 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jTextField_TGBD = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField_ChucDanh = new javax.swing.JTextField();
+        jLabel_PCChucVu = new javax.swing.JLabel();
+        jTextField_HSLuong = new javax.swing.JTextField();
         jButton_Sua = new javax.swing.JButton();
         jButton_Dong = new javax.swing.JButton();
         jButton_Them = new javax.swing.JButton();
@@ -104,7 +98,7 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel_MaCB = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable_ChucDanh = new javax.swing.JTable();
+        jTable_ChucVu = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,10 +107,10 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Thời gian bắt đầu:");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel4.setText("Chức Danh:");
+        jLabel_PCChucVu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel_PCChucVu.setText("Hệ Số Lương:");
 
-        jTextField_ChucDanh.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextField_HSLuong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jButton_Sua.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton_Sua.setText("Sửa");
@@ -161,20 +155,18 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jButton_Them, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel_PCChucVu)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(21, 21, 21)
+                            .addComponent(jButton_Them, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(22, 22, 22))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
                             .addComponent(jLabel2)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel4)))))
+                            .addGap(21, 21, 21)))
+                    .addComponent(jLabel3))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
@@ -189,7 +181,7 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel_MaCB)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField_ChucDanh)
+                                .addComponent(jTextField_HSLuong)
                                 .addComponent(jTextField_TGBD, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -200,15 +192,15 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel_MaCB))
-                .addGap(64, 64, 64)
+                .addGap(78, 78, 78)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField_ChucDanh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel_PCChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField_HSLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField_TGBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(82, 82, 82)
+                .addGap(65, 65, 65)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_Sua, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton_Dong, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,7 +209,7 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
                 .addContainerGap(154, Short.MAX_VALUE))
         );
 
-        jTable_ChucDanh.setModel(new javax.swing.table.DefaultTableModel(
+        jTable_ChucVu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -228,12 +220,12 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable_ChucDanh.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTable_ChucVu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable_ChucDanhMouseClicked(evt);
+                jTable_ChucVuMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable_ChucDanh);
+        jScrollPane1.setViewportView(jTable_ChucVu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,7 +234,7 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,30 +248,95 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTable_ChucDanhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ChucDanhMouseClicked
+    private void jButton_SuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SuaActionPerformed
         // TODO add your handling code here:
-        int index = jTable_ChucDanh.getSelectedRow();
-        jTextField_ChucDanh.setText(arrayList.get(index).getChucDanh().toString());
-        Date date = arrayList.get(index).getThoiGianBD();
-        jTextField_TGBD.setText(dateFormat.format(date));
+        int index = jTable_ChucVu.getSelectedRow();
+        HeSoLuong hsluong_selected = arrayList.get(index);
+        double hsLuong = Double.parseDouble(jTextField_HSLuong.getText());
+        String tgbd = jTextField_TGBD.getText();
+        String maCB = jLabel_MaCB.getText();
+        Date thoigianBD = null;
+        try {
+            thoigianBD = dateFormat.parse(tgbd);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "Nhap khong dung dinh dang cua date !!", "Thong bao", JOptionPane.WARNING_MESSAGE);
+        }
+        //đưa thông tin hệ số lương đang chọn lên các JText_Field
+        hsluong_selected.setHsluong(hsLuong);
+        hsluong_selected.setThoiGianBD(thoigianBD);
+        HeSoLuong result = dBhsLuong.updatehsLuong(hsluong_selected);
+        if (result != null) {
+            JOptionPane.showMessageDialog(null, "Update thanh cong");
+            arrayList = dBhsLuong.getAll(maCB);
 
+            defaultTableModel.setRowCount(0);
 
-    }//GEN-LAST:event_jTable_ChucDanhMouseClicked
+            ArrayList<Object> listRow = new ArrayList<>();
+            if (arrayList != null) {
+                for (int i = 0; i < arrayList.size(); i++) {
+                    listRow.add(i + 1);
+                    listRow.add(arrayList.get(i).getHsluong());
+                    Date date = arrayList.get(i).getThoiGianBD();
+                    String thoiGianBD = dateFormat.format(date);
+                    listRow.add(thoiGianBD);
+                    defaultTableModel.addRow(listRow.toArray());
+                    listRow.clear();
+                }
+                //            jTable1.setModel(defaultTableModel);
+            } else {
+                JOptionPane.showMessageDialog(null, "Update that bai !!", "Thong bao", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton_SuaActionPerformed
+
+    private void jButton_DongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DongActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton_DongActionPerformed
+
+    private void jButton_ThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemActionPerformed
+        // TODO add your handling code here:
+        String tgbd = jTextField_TGBD.getText();
+        String maCB = jLabel_MaCB.getText();
+        double hsLuong = Double.parseDouble(jTextField_HSLuong.getText());
+        Date thoigianBD = null;
+        try {
+            thoigianBD = dateFormat.parse(tgbd);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "Nhap khong dung dinh dang cua date !!", "Thong bao", JOptionPane.WARNING_MESSAGE);
+        }
+        //tạo 1 đối tượng mới
+        HeSoLuong hsluong = new HeSoLuong(IdChucVu, maCB, hsLuong, thoigianBD);
+        HeSoLuong result = dBhsLuong.addNew(maCB, hsluong);
+        if (result != null) {
+            JOptionPane.showMessageDialog(null, "Thêm hệ số lương thành công");
+            arrayList = dBhsLuong.getAll(maCB);
+            loadDataTable(arrayList);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Thêm hệ số lương thất bại");
+        }
+        //        ArrayList<Object> listRow = new ArrayList<>();
+        //        listRow.add(size+1);
+        //        listRow.add(chucDanh);
+        //        listRow.add(tgbd);
+        //        defaultTableModel.addRow(listRow.toArray());;
+    }//GEN-LAST:event_jButton_ThemActionPerformed
 
     private void jButton_XoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XoaActionPerformed
-        // TODO add your handling code here: 
-        int index = jTable_ChucDanh.getSelectedRow();
+        // TODO add your handling code here:
+        int index = jTable_ChucVu.getSelectedRow();
         String canbo = jLabel_MaCB.getText();
-        String chucDanh = jTextField_ChucDanh.getText();
+        double hsLuong = Double.parseDouble(jTextField_HSLuong.getText());
         String tgbd = jTextField_TGBD.getText();
         String maCB = jLabel_MaCB.getText();
 
         if (index >= 0) {
-            ChucDanh chucdanh = arrayList.get(index);
-            int conf = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn xóa dòng  : ID chức danh :  " + chucdanh.getId(), "Thông báo!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            HeSoLuong hsluong = arrayList.get(index);
+            int conf = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn xóa dòng  : ID hệ số lương :  " + hsluong.getIdhesoluong(), "Thông báo!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (conf == JOptionPane.YES_OPTION) {
-                chucdanh = dBChucDanh.deleteChucDanh(chucdanh);
-                if (chucdanh != null) {
+                hsluong = dBhsLuong.deletehsLuong(hsluong);
+                if (hsluong != null) {
                     arrayList.remove(index);
                     loadDataTable(arrayList);
                     JOptionPane.showMessageDialog(null, "Xóa thành công !!");
@@ -292,81 +349,13 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_XoaActionPerformed
 
-    private void jButton_ThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemActionPerformed
+    private void jTable_ChucVuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ChucVuMouseClicked
         // TODO add your handling code here:
-        String canbo = jLabel_MaCB.getText();
-        String chucDanh = jTextField_ChucDanh.getText();
-        String tgbd = jTextField_TGBD.getText();
-        String maCB = jLabel_MaCB.getText();
-        Date thoigianBD = null;
-        try {
-            thoigianBD = dateFormat.parse(tgbd);
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Nhap khong dung dinh dang cua date !!", "Thong bao", JOptionPane.WARNING_MESSAGE);
-        }
-        //tạo 1 đối tượng mới
-        ChucDanh chucdanh = new ChucDanh(IdChucDanh, maCB, chucDanh, thoigianBD);
-        ChucDanh result = dBChucDanh.addNew(canbo, chucdanh);
-        if (result != null) {
-            JOptionPane.showMessageDialog(null, "Thêm chức danh thành công");
-            arrayList = dBChucDanh.getAll(maCB);
-            loadDataTable(arrayList);
-            
-        } else {
-            JOptionPane.showMessageDialog(null, "Thêm chức danh thất bại");
-        }
-        //        ArrayList<Object> listRow = new ArrayList<>();
-        //        listRow.add(size+1);
-        //        listRow.add(chucDanh);
-        //        listRow.add(tgbd);
-        //        defaultTableModel.addRow(listRow.toArray());;
-    }//GEN-LAST:event_jButton_ThemActionPerformed
-
-    private void jButton_SuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SuaActionPerformed
-        // TODO add your handling code here:
-        int index = jTable_ChucDanh.getSelectedRow();
-        ChucDanh chucdanh_selected = arrayList.get(index);
-        String chucDanh = jTextField_ChucDanh.getText();
-        String tgbd = jTextField_TGBD.getText();
-        String maCB = jLabel_MaCB.getText();
-        Date thoigianBD = null;
-        try {
-            thoigianBD = dateFormat.parse(tgbd);
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Nhap khong dung dinh dang cua date !!", "Thong bao", JOptionPane.WARNING_MESSAGE);
-        }
-        //
-        chucdanh_selected.setChucDanh(chucDanh);
-        chucdanh_selected.setThoiGianBD(thoigianBD);
-        ChucDanh result = dBChucDanh.updateChucDanh(chucdanh_selected);
-        if (result != null) {
-            JOptionPane.showMessageDialog(null, "Update thanh cong");
-            arrayList = dBChucDanh.getAll(maCB);
-
-            defaultTableModel.setRowCount(0);
-
-            ArrayList<Object> listRow = new ArrayList<>();
-            if (arrayList != null) {
-                for (int i = 0; i < arrayList.size(); i++) {
-                    listRow.add(i + 1);
-                    listRow.add(arrayList.get(i).getChucDanh());
-                    Date date = arrayList.get(i).getThoiGianBD();
-                    String thoiGianBD = dateFormat.format(date);
-                    listRow.add(thoiGianBD);
-                    defaultTableModel.addRow(listRow.toArray());
-                    listRow.clear();
-                }
-//            jTable1.setModel(defaultTableModel);
-            } else {
-                JOptionPane.showMessageDialog(null, "Update that bai !!", "Thong bao", JOptionPane.WARNING_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_jButton_SuaActionPerformed
-
-    private void jButton_DongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DongActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_jButton_DongActionPerformed
+        int index = jTable_ChucVu.getSelectedRow();
+        jTextField_HSLuong.setText(String.valueOf(arrayList.get(index).getHsluong()));
+        Date date = arrayList.get(index).getThoiGianBD();
+        jTextField_TGBD.setText(dateFormat.format(date));
+    }//GEN-LAST:event_jTable_ChucVuMouseClicked
 
     /**
      * @param args the command line arguments
@@ -385,23 +374,22 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HienThi_ChucDanh.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HienThi_HSLuong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HienThi_ChucDanh.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HienThi_HSLuong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HienThi_ChucDanh.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HienThi_HSLuong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HienThi_ChucDanh.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HienThi_HSLuong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                // new ThemChucDanh().setVisible(true);
-            }
-        });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new HienThi_HSLuong().setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -411,12 +399,12 @@ public class HienThi_ChucDanh extends javax.swing.JFrame {
     private javax.swing.JButton jButton_Xoa;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel_MaCB;
+    private javax.swing.JLabel jLabel_PCChucVu;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable_ChucDanh;
-    private javax.swing.JTextField jTextField_ChucDanh;
+    private javax.swing.JTable jTable_ChucVu;
+    private javax.swing.JTextField jTextField_HSLuong;
     private javax.swing.JTextField jTextField_TGBD;
     // End of variables declaration//GEN-END:variables
 }

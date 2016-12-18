@@ -243,12 +243,27 @@ public class QuanLyThongTin extends javax.swing.JPanel {
         jPanel5.add(jButton_ChucDanh);
 
         jButton_ChucVu.setText("Chức vụ");
+        jButton_ChucVu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ChucVuActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton_ChucVu);
 
         jButton_HSLuong.setText("HS Lương");
+        jButton_HSLuong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_HSLuongActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton_HSLuong);
 
         jButton_DangDoan.setText("Đảng-Đoàn");
+        jButton_DangDoan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_DangDoanActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton_DangDoan);
 
         jbThemCanBo.setText("Thêm cán bộ");
@@ -435,6 +450,7 @@ public class QuanLyThongTin extends javax.swing.JPanel {
 
     private void jButton_ChucDanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChucDanhActionPerformed
         // TODO add your handling code here:
+        arrayList = dBCanBo.getAll();
         int index = jTable_QuanLyThongTin.getSelectedRow();
         if(index >= 0){
             CanBo canBo = arrayList.get(index);
@@ -452,6 +468,38 @@ public class QuanLyThongTin extends javax.swing.JPanel {
         ThongTinChiTiet.canBo = canBo;
         ThongTinChiTiet chiTiet = new  ThongTinChiTiet();
     }//GEN-LAST:event_jbChiTietActionPerformed
+
+    private void jButton_ChucVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChucVuActionPerformed
+        // TODO add your handling code here:
+        arrayList = dBCanBo.getAll();
+        int index = jTable_QuanLyThongTin.getSelectedRow();
+        if(index >= 0){
+            CanBo canBo = arrayList.get(index);
+            new HienThi_ChucVu(canBo);
+        }else{
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn hàng nào để thêm chức vụ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton_ChucVuActionPerformed
+
+    private void jButton_HSLuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HSLuongActionPerformed
+        // TODO add your handling code here:
+        arrayList = dBCanBo.getAll();
+        int index = jTable_QuanLyThongTin.getSelectedRow();
+        if(index >= 0){
+            CanBo canBo = arrayList.get(index);
+            new HienThi_HSLuong(canBo);
+        }
+    }//GEN-LAST:event_jButton_HSLuongActionPerformed
+
+    private void jButton_DangDoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DangDoanActionPerformed
+        // TODO add your handling code here:
+        arrayList = dBCanBo.getAll();
+        int index = jTable_QuanLyThongTin.getSelectedRow();
+        if(index >= 0){
+            CanBo canBo = arrayList.get(index);
+            new HienThi_DangDoan(canBo);
+        }
+    }//GEN-LAST:event_jButton_DangDoanActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

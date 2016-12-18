@@ -193,16 +193,25 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ch&#x1ee9;c v&#x1ee5;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_ChucVuActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton_HSLuong">
               <Properties>
                 <Property name="text" type="java.lang.String" value="HS L&#x1b0;&#x1a1;ng"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_HSLuongActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton_DangDoan">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x1ea3;ng-&#x110;o&#xe0;n"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_DangDoanActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jbThemCanBo">
               <Properties>
